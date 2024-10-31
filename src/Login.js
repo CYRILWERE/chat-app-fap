@@ -11,13 +11,17 @@ const Login = ({ setIsAuthenticated }) => {
         e.preventDefault();
 
         const users = JSON.parse(localStorage.getItem('users')) || [];
-
-        // Check if the username and password match
         const user = users.find((user) => user.username === username && user.password === password);
 
         if (user) {
             setIsAuthenticated(true);
-            localStorage.setItem('auth', 'true'); // Mark the user as authenticated
+            localStorage.setItem('auth', 'true');
+
+            // Add user to online users
+            const onlineUsers = JSON.parse(localStorage.getItem('onlineUsers')) || [];
+            onlineUsers.push(user);
+            localStorage.setItem('onlineUsers', JSON.stringify(onlineUsers));
+
             navigate('/chat');
         } else {
             setError('Invalid username or password');
@@ -50,7 +54,6 @@ const Login = ({ setIsAuthenticated }) => {
                 <button type="submit">Login</button>
             </form>
 
-            {/* Link to the registration page */}
             <p>
                 Don't have an account? <Link to="/register">Register here</Link>
             </p>

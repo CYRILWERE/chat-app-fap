@@ -11,27 +11,23 @@ const Register = () => {
     const handleRegister = (e) => {
         e.preventDefault();
 
-        // Basic validation
         if (password !== confirmPassword) {
             setError('Passwords do not match!');
             return;
         }
 
         const users = JSON.parse(localStorage.getItem('users')) || [];
-
-        // Check if the username already exists
         const userExists = users.some((user) => user.username === username);
+
         if (userExists) {
             setError('Username already exists!');
             return;
         }
 
-        // Save new user in localStorage
-        const newUser = { username, password };
+        const newUser = { id: Date.now(), username, password };
         users.push(newUser);
         localStorage.setItem('users', JSON.stringify(users));
 
-        // Navigate to login page after registration
         navigate('/login');
     };
 
